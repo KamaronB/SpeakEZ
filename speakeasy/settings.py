@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello_world',
+    'Login',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +53,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'speakeasy.urls'
 
 TEMPLATES = [
+ {
+   'BACKEND': 'django.template.backends.jinja2.Jinja2',
+   'DIRS': [],
+   'APP_DIRS': True,
+   'OPTIONS': {
+     'environment': 'speakeasy.jinja2.environment'
+   },
+ },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ["speakeasy/templates/"],
@@ -119,3 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    
+]
