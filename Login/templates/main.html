@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="container" style="display:flex; justify-content: center; align-items: center;">
+  <div class="row">
+    <div class="col align-self-center">
+      {%load static%}
+      <div class="jumbotron" style="background-image: url({% static "images/vladislav-klapin-465070-unsplash.jpg" %})">
+        {%if user.is_authenticated%}
+        <h1 class="display-4">Hello,{{user.username}}</h1>
+        {%else%}
+        <h1 class="display-4">Hello,Join Us!</h1>
+        {%endif%}
+    <p class="lead">Currently Under Construction</p>
+    <hr class="my-4">
+    <p>Stay along for the ride</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
