@@ -34,3 +34,6 @@ def register(request):
         context= {'form': form}
         #return the html file to user with rendered form as context
         return render(request,'registration/register.html',context)
+
+def about(request):
+    return render(request,'about.html',{})
