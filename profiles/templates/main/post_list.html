@@ -1,0 +1,25 @@
+{%extends "base.html"%}
+
+
+{% block page_content %}
+<div class="d-flex justify-content center">
+<div class="d-flex flex-column">
+<form style="margin-left:auto; margin-right:auto; padding-top:50px;" method="GET" action="{% url 'search' %}"class="form-inline my-2 my-lg-0">
+  <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{request.Get.query}}">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+  <div class="card" style="width: 90rem; margin:60px; border-radius:25px;">
+  <ul class="list-group list-group-flush" style="margin-left:auto; margin-right:auto;">
+{%for obj in items %}
+
+    <li class="list-group-item" style="text-align:center"><h2>{{obj.username}} {{obj.first_name}} {{obj.last_name}} {{obj.profile.location}} <i class="fas fa-user-plus"></i> </h2> </li>
+
+{% endfor %}
+</ul>
+</div>
+
+<div style="margin-left: auto; margin-right:auto;" >
+{% include "pagination.html" %}
+</div>
+</div>
+{% endblock %}

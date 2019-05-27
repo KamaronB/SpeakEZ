@@ -19,8 +19,8 @@
       <div class="sidebar-brand-text mx-3"> <sup>{{user.username}}</sup></div>
     </br>
     </a>
-<div class="sidebar-brand-text mx-3">Bio: {{user.profile.bio}}</div>
-<div class="sidebar-brand-text mx-3">Location: {{user.profile.location}}</div>
+<div class="sidebar-brand-text mx-3"><p style="color: black;">Bio: </br>{{user.profile.bio}}</p></div>
+<div class="sidebar-brand-text mx-3"><p style="color: black;">Location:</br> {{user.profile.location}}</p></div>
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
@@ -91,7 +91,12 @@
   <!-- End of Sidebar -->
 
   <!-- Content Wrapper -->
-
+  <div class="row">
+  <div class="col align-self-center">
+<h1></h1>
+<h1>Pages go here</h1>
+</div>
+</div>
 </div>
 
 <!-- Bootstrap core JavaScript-->
@@ -110,6 +115,7 @@
 <!-- Page level custom scripts -->
 <script src="js/demo/chart-area-demo.js"></script>
 <script src="js/demo/chart-pie-demo.js"></script>
+
 {%else%}
 <p><h1> 404 Error <br> *obi-wan handwave these are not the pages you are looking for</h1></p>
 {%endif%}

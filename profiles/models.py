@@ -36,3 +36,8 @@ class Relationship(models.Model):
 class People(models.Model):
     friend_id=models.PositiveIntegerField(null=True, blank=True)
     rel_id= models.ForeignKey(Relationship,on_delete=models.CASCADE)
+
+class requests(models.Model):
+    receiver=models.ForeignKey(User,on_delete=models.CASCADE)
+    sender=models.PositiveIntegerField(null=False,blank=False)
+    accepted=models.BooleanField(null=False,default=False,blank=False)
