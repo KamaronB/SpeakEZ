@@ -12,7 +12,7 @@
   <ul class="list-group list-group-flush" style="margin-left:auto; margin-right:auto;">
 {%for obj in items %}
 
-    <li class="list-group-item" style="text-align:center"><h2>{{obj.username}} {{obj.first_name}} {{obj.last_name}} {{obj.profile.location}} <i class="fas fa-user-plus"></i> </h2> </li>
+    <li class="list-group-item" style="text-align: left;"><h2>{{obj.username}} </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br><i class="fas fa-user-plus"><sup>add friend</sup></i> </h2> </li>
 
 {% endfor %}
 </ul>
