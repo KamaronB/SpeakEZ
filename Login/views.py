@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 
 
@@ -37,3 +37,8 @@ def register(request):
 
 def about(request):
     return render(request,'about.html',{})
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+    return render(request,'main.html',{})
