@@ -41,7 +41,7 @@ def search_user(request):
 
 def update_account(request):
 
-    if request.method=='POST' and request.user:
+    if request.method=='POST' and request.user.is_authenticated:
 
         #create new instance of form
         form= InfoForm(request.POST, instance=request.user.profile)
@@ -53,16 +53,16 @@ def update_account(request):
 
                 #redirect to profile
                 return HttpResponseRedirect('/profile/')
+    else:
+        if request.user.is_authenticated:
+            #if its not a post method create a new info form
+            form= InfoForm(instance=request.user.profile)
+            #this is to access form variable from view
+            context= {'form': form}
+            #return the html file to user with rendered form as context
+            return render(request,'main/update.html',context)
         else:
-            if request.user:
-                #if its not a post method create a new info form
-                form= InfoForm(instance=request.user.profile)
-                #this is to access form variable from view
-                context= {'form': form}
-                #return the html file to user with rendered form as context
-                return render(request,'main/update.html',context)
-            else:
-                return HttpResponseRedirect('')
+            return HttpResponseRedirect('/accounts/login')
 
 
 def friend_request(request):
