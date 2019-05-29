@@ -5,10 +5,12 @@ from django.http import HttpResponseRedirect
 
 
 def main(request):
+
     #return the root html file
     return render(request,'main.html',{})
 
 def register(request):
+
     ##if the method is post
     if request.method == "POST":
         #send input data to form variable
@@ -36,9 +38,11 @@ def register(request):
         return render(request,'registration/register.html',context)
 
 def about(request):
+
     return render(request,'about.html',{})
 
 def logout_view(request):
+
     logout(request)
     # Redirect to a success page.
     return render(request,'main.html',{})

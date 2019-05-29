@@ -1,0 +1,43 @@
+
+{%extends "pro.html"%}
+{% block page_content %}
+{%if user.is_authenticated %}
+<div class="container" >
+  <div class="row">
+    <div class="col align-self-center">
+
+    <h5 class="display-4" >Update your account </br>
+    <h1><i class="far fa-user-circle"></i></h1></h5>
+    {%if form.errors%}
+    <p style="color: red">Please fill all inputs!</p>
+    {%endif%}
+    <form method="post" action="{%url 'update'%}">
+      {% csrf_token %}
+
+
+      <div class="form-group" >
+        <label for="Bio">Bio:</br> {{form.bio}}</label>
+      </div>
+
+  <div class="form-group">
+    <label for="Location">Location:</br>{{form.location}}</label>
+    </div>
+
+  <div class="form-group">
+    <label for="Birth">Birthday:</br>{{form.birth_date}}</label>
+    </div>
+  <button type="submit" class="btn btn-primary" value="login">Submit</button>
+  <input type="hidden" name="next" value="{{next}}">
+</form>
+
+  </div>
+</div>
+</div>
+
+{%else%}
+
+<p><h1> 404 Error <br> *obi-wan handwave these are not the pages you are looking for</h1></p>
+{%endif%}
+
+
+{% endblock %}
