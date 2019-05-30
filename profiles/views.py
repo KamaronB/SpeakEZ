@@ -77,6 +77,22 @@ def friend_request(request):
         return HttpResponseRedirect('/profile/')
 
 def show_requests(request):
+    template='main/requests.html'
     #get all results of current user
-    current_user = request.user.id
-    friend_req= 2
+    friend_name=None
+    current_user =request.user
+    friend_req= requests.objects.filter(receiver=current_user.id)
+    if friend_req:
+        for f in friend_req:
+            friend_name= User.objects.filter(id=f.sender)
+
+
+    if friend_name != None:
+        pages=pagination(request,friend_name,num=10)
+        find = lambda a: User.object.get(id=a)
+        context={'items':pages[0],
+        'page_range': pages[1],
+         }
+        return render (request,template,context)
+    else:
+        return render(request,template,{})
