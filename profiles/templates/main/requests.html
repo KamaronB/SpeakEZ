@@ -1,0 +1,28 @@
+{%extends "pro.html"%}
+
+
+{% block page_content %}
+<div class="d-flex justify-content center">
+<div class="d-flex flex-column">
+  <div class="card" style="width: 90rem; margin:60px; border-radius:25px;">
+  <ul class="list-group list-group-flush" style="margin-left:auto; margin-right:auto;">
+{%for obj in items %}
+
+    <li class="list-group-item" style="text-align: left;"><h2> </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br>
+      {%if user.is_authenticated%}
+      <form method="POST" action="{% url 'friend request' %}">
+        {% csrf_token %}
+        <input name="oth_user" value="{{obj.id}}" hidden>
+      <button type="submit" class="btn btn-outline-success"><i class="fas fa-user-plus"><sup>accept request</sup></i></button>
+    </form>
+      {%endif%}</h2> </li>
+
+{% endfor %}
+</ul>
+</div>
+
+<div style="margin-left: auto; margin-right:auto;" >
+{% include "pagination.html" %}
+</div>
+</div>
+{% endblock %}

@@ -12,7 +12,14 @@
   <ul class="list-group list-group-flush" style="margin-left:auto; margin-right:auto;">
 {%for obj in items %}
 
-    <li class="list-group-item" style="text-align: left;"><h2>{{obj.username}} </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br><i class="fas fa-user-plus"><sup>add friend</sup></i> </h2> </li>
+    <li class="list-group-item" style="text-align: left;"><h2>{{obj.username}}{{obj.id}} </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br>
+      {%if user.is_authenticated and user.id != obj.id%}
+      <form method="POST" action="{% url 'friend request' %}">
+        {% csrf_token %}
+        <input name="oth_user" value="{{obj.id}}" hidden>
+      <button type="submit" class="btn btn-outline-success"><i class="fas fa-user-plus"><sup>add friend</sup></i></button>
+    </form>
+      {%endif%}</h2> </li>
 
 {% endfor %}
 </ul>

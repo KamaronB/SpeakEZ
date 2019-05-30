@@ -3,7 +3,7 @@
             <div class="btn-group" >
             {% if items.has_previous %}
               <button type="button" class="btn btn-default btn-md page-first" onclick="location.href='?pagenumber=1&limit={{rows}}';">First</button>
-              <button type="button" class="btn btn-default btn-md page-arrows" onclick="location.href='?pagenumber={{ items.previous_page_number }}&limit={{rows}}';">&laquo;</button>
+              <button type="button" class="btn btn-default btn-md page-arrows" onclick="location.href='?pagenumber={{ items.previous_page_number }}&limit={{rows}}{%if query%}&q={{query}}{%endif%}';">&laquo;</button>
             {% else %}
               <button type="button" class="btn disabled" >First</button>
               <button type="button"  class="btn disabled">&laquo;</button>
@@ -11,15 +11,15 @@
             {% endif %}
                 </div>
     <span><b>Page </b></span>
-            <input type="text" style="width:50px" onchange="location.href='?pagenumber={{items.number}}&limit={{rows}}';" onkeyup="this.onchange()" oninput="this.onchange()" value="{{items.number}}" >
+            <input type="text" style="width:50px" onchange="location.href='?pagenumber={{items.number}}&limit={{rows}}{%if query%}&q={{query}}{%endif%}';" onkeyup="this.onchange()" oninput="this.onchange()" value="{{items.number}}" >
                 <span> of {{items.paginator.num_pages}}</span>
 
 
              <div class="btn-group" >
             {% if items.has_next %}
 
-              <button type="button"  class="btn btn-default btn-md page-arrows"  onclick="location.href='?pagenumber={{ items.next_page_number }}&limit={{rows}}';">&raquo;</button>
-              <button type="button"  class="btn btn-default btn-md page-last" onclick="location.href='?pagenumber={{ items.paginator.num_pages }}&limit={{rows}}';">Last</button>
+              <button type="button"  class="btn btn-default btn-md page-arrows"  onclick="location.href='?pagenumber={{ items.next_page_number }}&limit={{rows}}{%if query%}&q={{query}}{%endif%}';">&raquo;</button>
+              <button type="button"  class="btn btn-default btn-md page-last" onclick="location.href='?pagenumber={{ items.paginator.num_pages }}&limit={{rows}}{%if query%}&q={{query}}{%endif%}';">Last</button>
             {% else %}
 
               <button type="button"  class="btn btn disabled">&laquo;</button>
