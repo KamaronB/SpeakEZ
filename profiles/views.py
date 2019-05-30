@@ -66,8 +66,12 @@ def update_account(request):
 
 
 def friend_request(request):
+    #get the user you want to send a request to from the post method
     other_user=request.POST.get("oth_user")
+    #get the current user making the request
     current_user = request.user.id
+
+    #if they aren't the same person save the data in database and redirect to profile
     if other_user != current_user:
         new_request=requests()
         new_request.sender=current_user
@@ -76,17 +80,24 @@ def friend_request(request):
         new_request.save()
         return HttpResponseRedirect('/profile/')
 
+
 def show_requests(request):
+    #set the template
     template='main/requests.html'
-    #get all results of current user
+    #Set friend name empty
     friend_name=None
+    #get the user making the request
     current_user =request.user
+
+    #if there is a request filter all requests down to the current user
     friend_req= requests.objects.filter(receiver=current_user.id)
+    #loop through the requests and find senders name based off of ID
+    #set names equal to friend names
     if friend_req:
         for f in friend_req:
             friend_name= User.objects.filter(id=f.sender)
 
-
+    #if there are friends show the friends and paginate
     if friend_name != None:
         pages=pagination(request,friend_name,num=10)
         find = lambda a: User.object.get(id=a)
@@ -94,5 +105,6 @@ def show_requests(request):
         'page_range': pages[1],
          }
         return render (request,template,context)
+    #if there are no friends return only the template
     else:
         return render(request,template,{})
