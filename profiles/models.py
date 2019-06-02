@@ -43,6 +43,28 @@ class Profile(models.Model):
 class Relationship(models.Model):
     type = models.TextField(max_length=50,blank=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    #
+    # @receiver(post_save,sender=requests)
+    # def create_user_relationships(sender, instance, **kwargs):
+    #     #if the instance of request is accepted
+    #     if instance.accepted==True:
+    #         #set the current user
+    #         Current_user=User.objects.get(instance.receiver)
+    #         #set the sender
+    #         oth_user=User.objects.get(pk=instance.sender)
+    #
+    #         #create the relationships
+    #         user_rel= Relationship.objects.create(type=friend,profile=current_user.profile)
+    #         user_rel.save()
+    #         oth_rel=Relationship.objects.create(type=friend,profile=oth_user.profile)
+    #         oth_rel.save()
+    #         #create the people
+    #
+    #         user_peep= People.objects.create(friend_id=current_user.id,rel_id=current_user.profile.relationship.id)
+    #         user_peep.save()
+    #         oth_peep=people.objects.create(friend_id=oth_user.id,rel_id=oth_user.profile.relationship.id)
+    #         oth_peep.save()
+
 
 
 
@@ -54,12 +76,25 @@ class requests(models.Model):
     receiver=models.ForeignKey(User,on_delete=models.CASCADE)
     sender=models.PositiveIntegerField(null=False,blank=False)
     accepted=models.BooleanField(null=False,default=False,blank=False)
-    # 
-    # @receiver(post_save, sender=requests)
-    # def create_user_relationships(sender, instance, created, **kwargs):
-    #     if requests.accepted==True:
-    #         Relationship.objects.create(type=friend,profile=)
-    #
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
+
+
+@receiver(post_save,sender=requests)
+def create_user_relationships(sender, instance, **kwargs):
+    #if the instance of request is accepted
+    if instance.accepted==True:
+        #set the current user
+        current_user=User.objects.get(pk=instance.receiver.id)
+        #set the sender
+        oth_user=User.objects.get(pk=instance.sender)
+
+        #create the relationships
+        user_rel= Relationship.objects.create(type='friend',profile=current_user.profile)
+        user_rel.save()
+        oth_rel=Relationship.objects.create(type='friend',profile=oth_user.profile)
+        oth_rel.save()
+        #create the people
+
+        user_peep= People.objects.create(friend_id=current_user.id,rel_id=current_user.profile.relationship.id)
+        user_peep.save()
+        oth_peep=people.objects.create(friend_id=oth_user.id,rel_id=oth_user.profile.relationship.id)
+        oth_peep.save()

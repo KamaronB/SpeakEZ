@@ -100,7 +100,7 @@ def show_requests(request):
     #if there are friends show the friends and paginate
     if friend_name != None:
         pages=pagination(request,friend_name,num=10)
-        find = lambda a: User.object.get(id=a)
+        #find = lambda a: User.objects.get(id=a)
         context={'items':pages[0],
         'page_range': pages[1],
          }
@@ -108,3 +108,16 @@ def show_requests(request):
     #if there are no friends return only the template
     else:
         return render(request,template,{})
+
+
+def accept_request(request):
+        #get the user you want to send a request to from the post method
+        other_user=request.POST.get("oth_user")
+        #get the current user making the request
+        current_user = request.user.id
+        friend_requests = requests.objects.get(sender=other_user,receiver=current_user)
+        #if they aren't the same person save the data in database and redirect to profile
+        if friend_requests:
+            friend_requests.accepted=True
+            friend_requests.save()
+            return HttpResponseRedirect('/profile/requests/')
