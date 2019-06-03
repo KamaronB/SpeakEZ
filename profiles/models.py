@@ -66,9 +66,9 @@ def create_user_relationships(sender, instance, **kwargs):
     #if the instance of request is accepted
     if instance.accepted==True:
         #set the current user
-        current_user=User.objects.get(pk=instance.receiver.id)
+        current_user=User.objects.get(id=instance.receiver.id)
         #set the sender
-        oth_user=User.objects.get(pk=instance.sender)
+        oth_user=User.objects.get(id=instance.sender)
 
         #create the relationships
         user_rel= Relationship.objects.create(type='friend',profile=current_user.profile)
@@ -77,7 +77,7 @@ def create_user_relationships(sender, instance, **kwargs):
         oth_rel.save()
         #create the people
 
-        user_peep= People.objects.create(friend_id=current_user.id,rel_id=user_rel)
+        user_peep= People.objects.create(friend_id=oth_user.id,rel_id=user_rel)
         user_peep.save()
-        oth_peep=People.objects.create(friend_id=oth_user.id,rel_id=oth_rel)
+        oth_peep=People.objects.create(friend_id=current_user.id,rel_id=oth_rel)
         oth_peep.save()

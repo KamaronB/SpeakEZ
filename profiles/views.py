@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from speakeasy.config import pagination
 from django.db.models import Q
-from .models import User,requests
+from .models import User,requests,Relationship,People
 from .forms import InfoForm
 from django.http import HttpResponseRedirect
 
@@ -121,3 +121,26 @@ def accept_request(request):
             friend_requests.accepted=True
             friend_requests.save()
             return HttpResponseRedirect('/profile/requests/')
+
+
+
+def show_friends(request):
+    template='main/chat.html'
+    #get the current user
+    current_user= request.user
+    #get the users relationships
+    relationship = Relationship.objects.get(profile=current_user.profile)
+    #find the people in the relationship
+    peeps = People.objects.get(rel_id=relationship)
+    #match the people to the user
+    friends=User.objects.filter(id=peeps.friend_id)
+
+    if friends != None:
+        pages=pagination(request,friends,num=10)
+        context={'items':pages[0],
+        'page_range': pages[1],
+         }
+        return render (request,template,context)
+    #if there are no friends return only the template
+    else:
+        return render(request,template,{})
