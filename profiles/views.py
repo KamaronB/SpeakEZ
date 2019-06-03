@@ -90,7 +90,7 @@ def show_requests(request):
     current_user =request.user
 
     #if there is a request filter all requests down to the current user
-    friend_req= requests.objects.filter(receiver=current_user.id)
+    friend_req= requests.objects.filter(receiver=current_user.id,accepted=False)
     #loop through the requests and find senders name based off of ID
     #set names equal to friend names
     if friend_req:
