@@ -6,12 +6,13 @@
 <div class="d-flex flex-column">
   <div class="card" style="width: 90rem; margin:60px; border-radius:25px;">
   <ul class="list-group list-group-flush" style="margin-left:auto; margin-right:auto;">
+    <h1>Chat with Friends</h1>
 {%for obj in items %}
 
     <li class="list-group-item" style="text-align: left;"><h2> </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br>
     </br>Bio:{{obj.profile.bio}}
       {%if user.is_authenticated%}
-      <form method="POST" action="{% url 'accept' %}">
+      <form method="POST" action="#">
         {% csrf_token %}
         <input name="oth_user" value="{{obj.id}}" hidden>
       <button type="submit" class="btn btn-outline-success"><i class="far fa-comments"><sup>Chat</sup></i></button>

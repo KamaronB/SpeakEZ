@@ -135,7 +135,7 @@ def show_friends(request):
     #match the people to the user
     friends=User.objects.filter(id=peeps.friend_id)
 
-    if friends != None:
+    if friends:
         pages=pagination(request,friends,num=10)
         context={'items':pages[0],
         'page_range': pages[1],
