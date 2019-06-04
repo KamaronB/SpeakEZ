@@ -144,3 +144,23 @@ def show_friends(request):
     #if there are no friends return only the template
     else:
         return render(request,template,{})
+
+
+
+def chat_room(request):
+    #Get the current user & the User we want to send messages to #
+    user1= request.user
+    user2=request.Post.get("oth_user")
+
+    # If the room with the given users doesn't exist, automatically create it
+    # upon first visit (a la etherpad).
+    if user1 and user2:
+        room, created = Room.objects.get_or_create(user_1=user1.id,user_2=user2)
+
+    # We want to show the last 50 messages, ordered most-recent-last
+    messages = reversed(room.messages.order_by('-timestamp')[:50])
+
+    return render(request, "chat/room.html", {
+        'room': room,
+        'messages': messages,
+    })

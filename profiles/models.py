@@ -81,3 +81,20 @@ def create_user_relationships(sender, instance, **kwargs):
         user_peep.save()
         oth_peep=People.objects.create(friend_id=current_user.id,rel_id=oth_rel)
         oth_peep.save()
+
+
+
+
+"""Chat models for the user"""
+
+class Room(models.Model):
+    name = models.TextField()
+    label = models.SlugField(unique=True)
+    user_1 = models.PositiveIntegerField(null=False,blank=False)
+    user_2 = models.PositiveIntegerField(null=False,blank=False)
+
+class Message(models.Model):
+    room = models.ForeignKey(Room, related_name='messages')
+    handle = models.TextField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now, db_index=True)
