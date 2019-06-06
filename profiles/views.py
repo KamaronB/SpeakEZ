@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from speakeasy.config import pagination
 from django.db.models import Q
-from .models import User,requests
+from django.urls import reverse,reverse_lazy
+from .models import User,requests,Relationship,People,Room,Message
 from .forms import InfoForm
 from django.http import HttpResponseRedirect
+from django.utils.crypto import get_random_string
+from django.utils.safestring import mark_safe
+import json
 
 # Create your views here.
 
@@ -121,3 +125,64 @@ def accept_request(request):
             friend_requests.accepted=True
             friend_requests.save()
             return HttpResponseRedirect('/profile/requests/')
+
+
+
+def show_friends(request):
+
+            template='main/chat.html'
+            #get the current user
+            current_user= request.user
+            #get the users relationships
+            relationship = Relationship.objects.get(profile=current_user.profile)
+            #find the people in the relationship
+            peeps = People.objects.get(rel_id=relationship)
+            #match the people to the user
+            friends=User.objects.filter(id=peeps.friend_id)
+
+
+            if friends:
+                pages=pagination(request,friends,num=10)
+                context={'items':pages[0],
+                'page_range': pages[1],
+                 }
+                return render (request,template,context)
+            #if there are no friends return only the template
+            else:
+                return render(request,template,{})
+
+
+
+
+def create_chat_room(request):
+    #Get the current user & the User we want to send messages to #
+    user1= request.user
+    user2=request.POST.get("oth_user")
+
+    # If the room with the given users doesn't exist, automatically create it
+    # upon first visit
+    room = Room.objects.get(user_1__in=[user1.id,user2],user_2__in=[user1.id,user2])
+    if Room.objects.filter(room_name=room.room_name).exists():
+        #render existing room
+        return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': room.room_name}))
+    else:
+        new_room = Room.objects.create(user_1=user1.id,user_2=user2)
+        #create new room and render it
+        return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': new_room.room_name}))
+
+
+def chat_room(request,room_name):
+       #get the room
+        room= Room.objects.get(room_name= room_name)
+        #get the last 50 messages
+        messages = reversed(room.messages.order_by('-timestamp')[:50])
+
+        #render the room with the user objects inside of them
+        current_user= User.objects.get(id=room.user_1)
+        oth_user=User.objects.get(id=room.user_2)
+        return render(request, "main/room.html", {
+            'room': room,
+            'messages': messages,
+            'user': current_user,
+            'friend': oth_user
+        })

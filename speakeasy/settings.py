@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django_pdb',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,3 +138,19 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = '/'
+
+
+
+##Channel Layer for websocket
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        "ROUTING": "profiles.routing.channel_routing",
+    },
+}
+
+
+ASGI_APPLICATION='speakeasy.routing.application'

@@ -24,7 +24,7 @@
            profile
          </a>
          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-           <a class="dropdown-item" href="/profile">profile</a>
+           <a class="dropdown-item" href="{% url 'profiles:pro' %}">profile</a>
            <div class="dropdown-divider"></div>
            <a class="dropdown-item" href="/logout">Logout</a>
          </div>
@@ -43,7 +43,7 @@
       </li>
       {%endif%}
      </ul>
-     <form method="GET" action="{% url 'search' %}"class="form-inline my-2 my-lg-0">
+     <form method="GET" action="{% url 'profiles:search' %}"class="form-inline my-2 my-lg-0">
        <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{request.Get.query}}">
        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
      </form>

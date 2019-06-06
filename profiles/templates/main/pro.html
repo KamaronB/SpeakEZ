@@ -44,7 +44,7 @@
       </li>
       {%endif%}
      </ul>
-     <form method="GET" action="{% url 'search' %}"class="form-inline my-2 my-lg-0">
+     <form method="GET" action="{% url 'profiles:search' %}"class="form-inline my-2 my-lg-0">
        <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{request.Get.query}}">
        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
      </form>
@@ -99,7 +99,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <a class="nav-link collapsed" href="{%url 'profiles:chat' %}">
         <i class="fas fa-fw fa-cog"></i>
         <span> Chat</span>
       </a>
