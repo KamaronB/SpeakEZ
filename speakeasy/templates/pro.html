@@ -5,8 +5,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #0C29E6;">
 
   <a class="navbar-brand" href="/">SpeakEasy</a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-     <span class="navbar-toggler-icon"></span>
    </button>
 
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -43,7 +41,7 @@
       </li>
       {%endif%}
      </ul>
-     <form method="GET" action="{% url 'search' %}"class="form-inline my-2 my-lg-0">
+     <form method="GET" action="{% url 'profiles:search' %}"class="form-inline my-2 my-lg-0">
        <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{request.Get.query}}">
        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
      </form>

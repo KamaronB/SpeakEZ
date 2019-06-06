@@ -4,7 +4,7 @@
 {% block page_content %}
 <div class="d-flex justify-content center">
 <div class="d-flex flex-column">
-<form style="margin-left:auto; margin-right:auto; padding-top:50px;" method="GET" action="{% url 'search' %}"class="form-inline my-2 my-lg-0">
+<form style="margin-left:auto; margin-right:auto; padding-top:50px;" method="GET" action="{% url 'profiles:search' %}"class="form-inline my-2 my-lg-0">
   <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{request.Get.query}}">
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
@@ -14,7 +14,7 @@
 
     <li class="list-group-item" style="text-align: left;"><h2>{{obj.username}}{{obj.id}} </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br>
       {%if user.is_authenticated and user.id != obj.id%}
-      <form method="POST" action="{% url 'friend request' %}">
+      <form method="POST" action="{% url 'profiles:friend request' %}">
         {% csrf_token %}
         <input name="oth_user" value="{{obj.id}}" hidden>
       <button type="submit" class="btn btn-outline-success"><i class="fas fa-user-plus"><sup>add friend</sup></i></button>

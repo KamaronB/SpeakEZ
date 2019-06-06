@@ -12,7 +12,7 @@
     <li class="list-group-item" style="text-align: left;"><h2> </br>Name:{{obj.first_name}} {{obj.last_name}} </br> Location: {{obj.profile.location}} </br>
     </br>Bio:{{obj.profile.bio}}
       {%if user.is_authenticated%}
-      <form method="POST" action="#">
+      <form method="POST" action="{% url 'profiles:new_room' %}">
         {% csrf_token %}
         <input name="oth_user" value="{{obj.id}}" hidden>
       <button type="submit" class="btn btn-outline-success"><i class="far fa-comments"><sup>Chat</sup></i></button>

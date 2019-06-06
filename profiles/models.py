@@ -3,6 +3,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils import timezone
+import uuid
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 
@@ -89,13 +91,20 @@ def create_user_relationships(sender, instance, **kwargs):
 """Chat models for the user"""
 
 class Room(models.Model):
-    name = models.TextField()
-    label = models.SlugField(unique=True)
+    room_name = models.UUIDField(default=uuid.uuid4,editable=False,unique=True,null=False,blank=False)
     user_1 = models.PositiveIntegerField(null=False,blank=False)
     user_2 = models.PositiveIntegerField(null=False,blank=False)
+
 
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name='messages',on_delete=models.CASCADE)
     handle = models.TextField()
     message = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
+
+
+# @receiver(post_save,sender=Room)
+# def create_user_room(sender, instance, **kwargs):
+#     if instance.user_1 and instance.user_2:
+#         instance.room_name = get_random_string(length=32)
+#         instance.save()
