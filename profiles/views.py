@@ -182,7 +182,7 @@ def chat_room(request,room_name):
         oth_user=User.objects.get(id=room.user_2)
         return render(request, "main/room.html", {
             'room': room,
-            'messages': messages,
+            # 'messages': messages,
             'user': current_user,
             'friend': oth_user
         })

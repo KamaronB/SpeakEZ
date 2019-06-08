@@ -10,6 +10,10 @@ class ChatConsumer(AsyncConsumer):
 
         async def ws_connect(self,event):
             print("connected",event)
+            #await executes code and waits for it to finish 
+            await self.send({
+            "type": "websocket.accept"
+            })
 
 
         async def ws_disconnect(self,event):
