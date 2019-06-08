@@ -21,8 +21,7 @@
       //change to secure sockets
       ws_start='wss://'
     }
-    var chatSocket = new WebSocket(
-        ws_start + endpoint)
+    var chatSocket = new WebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
     }
