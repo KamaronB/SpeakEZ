@@ -61,7 +61,7 @@ class ChatConsumer(AsyncConsumer):
                 "msg":msg,
                 "username": username
                     }
-                #save info to database
+                #save message to database
                 await self.save_message(msg)
 
 
