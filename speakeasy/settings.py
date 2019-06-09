@@ -25,13 +25,14 @@ SECRET_KEY = ')vzl^1%l!0kbt^h89@2sl+618m$7@q=(r@^93klej4^km835m*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'channels',
+    'profiles',
     'django_pdb',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Login',
-    'profiles',
 
 ]
 
@@ -140,17 +140,13 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/'
 
 
-
-##Channel Layer for websocket
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        },
-        "ROUTING": "profiles.routing.channel_routing",
-    },
-}
-
-
 ASGI_APPLICATION='speakeasy.routing.application'
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis-server-name", 6379)],
+#         },
+#     },
+# }
