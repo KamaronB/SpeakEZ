@@ -33,11 +33,11 @@ class ChatConsumer(AsyncConsumer):
 
         async def websocket_receive(self, event):
             print("recieve",event)
-
+            user=self.scope['user']
+            username= user.username
             #grab data sent from room.html onopen function
             #example recieve {'type': 'websocket.receive', 'text': '{"message":"ads"}'}
             text_data= event.get('text',None)
-
             #if there is text
             if text_data is not None:
                 #save the dictionary sent inside of text_data
@@ -46,12 +46,17 @@ class ChatConsumer(AsyncConsumer):
                 ##get the actual message from data_dict
                 msg=data_dict.get('message')
                 print(msg)
-
-                #echo the message back
+                #Response data
+                response= {
+                "msg":msg,
+                "username": username
+                    }
+                #send the response data back
                 await self.send({
                 "type": "websocket.send",
-                "text": msg
+                "text": json.dumps(response)
                 })
+
 
         async def websocket_disconnect(self,event):
             print("disconnected",event)

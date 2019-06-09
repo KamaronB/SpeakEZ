@@ -40,8 +40,11 @@
     var chatSocket = new WebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
-      message=(e.data)
-      chat_history.append("<li>" + message + "</li>")
+      //parse the returned data from consumer.py
+      var returned_data= JSON.parse(e.data)
+
+      //append the chat history with new messages
+      chat_history.append("<li>" + returned_data.msg + " " + returned_data.username + "</li>")
     }
     chatSocket.onopen= function(e){
       console.log("open",e)
@@ -53,6 +56,7 @@
           'message': msg
         }
          chatSocket.send(JSON.stringify(data))
+         chat_history.append("<li>" + msg +" "+ "{{user.username}}"+ "</li>")
          formData[0].reset()
       })
     }
