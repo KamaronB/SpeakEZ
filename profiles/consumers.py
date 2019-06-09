@@ -11,20 +11,21 @@ class ChatConsumer(AsyncConsumer):
 
         async def websocket_connect(self,event):
             print("connected",event)
+            #get the name of the chatroom
             room_name=self.scope['url_route']['kwargs']['room_name']
+            #get the User
             current_user=self.scope['user']
+
+            #get the messages and the other userid
             other_user,messages= await self.get_room(room_name)
-            print(current_user,other_user,messages)
+
+
             # await executes code and waits for it to finish
             await self.send({
             "type": "websocket.accept"
             })
 
             # await asyncio.sleep(19)
-            # await self.send({
-            # "type": "websocket.send",
-            # "text": "Hello World",
-            # })
 
 
 
@@ -32,6 +33,25 @@ class ChatConsumer(AsyncConsumer):
 
         async def websocket_receive(self, event):
             print("recieve",event)
+
+            #grab data sent from room.html onopen function
+            #example recieve {'type': 'websocket.receive', 'text': '{"message":"ads"}'}
+            text_data= event.get('text',None)
+
+            #if there is text
+            if text_data is not None:
+                #save the dictionary sent inside of text_data
+                data_dict = json.loads(text_data)
+
+                ##get the actual message from data_dict
+                msg=data_dict.get('message')
+                print(msg)
+
+                #echo the message back
+                await self.send({
+                "type": "websocket.send",
+                "text": msg
+                })
 
         async def websocket_disconnect(self,event):
             print("disconnected",event)

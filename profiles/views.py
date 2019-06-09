@@ -172,17 +172,25 @@ def create_chat_room(request):
 
 
 def chat_room(request,room_name):
-       #get the room
-        room= Room.objects.get(room_name= room_name)
-        #get the last 50 messages
-        messages = reversed(room.messages.order_by('-timestamp')[:50])
+        room= Room.objects.get(room_name=room_name)
 
-        #render the room with the user objects inside of them
-        current_user= User.objects.get(id=room.user_1)
-        oth_user=User.objects.get(id=room.user_2)
-        return render(request, "main/room.html", {
-            'room': room,
-            'messages': messages,
-            'user': current_user,
-            'friend': oth_user
-        })
+        if request.user.is_authenticated and room.user_1==request.user.id or room.user_2==request.user.id:
+
+            #get the last 50 messages
+            messages = reversed(room.messages.order_by('-timestamp')[:50])
+
+            #render the room with the user objects inside of them
+            current_user= request.user
+            oth_user= None
+            if current_user.id == room.user_1:
+                oth_user= User.objects.get(id=room.user_2)
+            else:
+                oth_user=User.objects.get(id=room.user_1)
+            return render(request, "main/room.html", {
+                'room': room,
+                'messages': messages,
+                'user': current_user,
+                'friend': oth_user
+            })
+        else:
+            return render(request,"error/404.html",{})

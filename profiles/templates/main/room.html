@@ -3,18 +3,30 @@
 {% extends "pro.html" %}
 {% block page_content %}
 
-{%if user.is_authenticated%}
+{%if user.is_authenticated %}
   <h1>Chat room between {{user.username}} && {{friend.first_name}}</h1>
-    <li>{{message}},{{message.handle}}{{message.timestamp}}</li>
-
+  <div class="container" >
+    <div class="row">
+      <div class="col align-self-center">
+        <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
+  <ul id="history">
+    {%for m in message%}
+    <li>{{m.message}},{{m.handle}}{{m.timestamp}}</li>
+    {%endfor%}
+  </ul>
+  </div>
     <form id='form' method="POST" style="margin-left:auto; margin-right:auto; padding-top:50px;"class="form-inline my-2 my-lg-0">{%csrf_token%}
       <input class="form-control mr-sm-2"  type="message" placeholder="message" id="messages" aria-label="messages" >
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">send</button>
     </form>
+</div>
+</div>
+</div>
 
 <script>
     var formData=$("#form")
     var messages=$("#messages")
+    var chat_history=$("#history")
     var roomName = "{{ room.room_name}}"
     // var location= window.location
     var endpoint= window.location.host + '/profile/chat/room/' + roomName + '/'
@@ -28,13 +40,20 @@
     var chatSocket = new WebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
+      message=(e.data)
+      chat_history.append("<li>" + message + "</li>")
     }
     chatSocket.onopen= function(e){
       console.log("open",e)
-      //disable post Submit
+      // disable post Submit
       formData.submit(function(event){
         event.preventDefault()
-         chatSocket.send("hello world")
+        var msg= messages.val()
+        var data={
+          'message': msg
+        }
+         chatSocket.send(JSON.stringify(data))
+         formData[0].reset()
       })
     }
     chatSocket.onerror= function(e){

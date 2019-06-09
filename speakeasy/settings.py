@@ -142,11 +142,11 @@ LOGIN_REDIRECT_URL = '/'
 
 ASGI_APPLICATION='speakeasy.routing.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis-server-name", 6379)],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis-server-name", 6379)],
+#         },
+#     },
+# }
