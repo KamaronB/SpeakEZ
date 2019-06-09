@@ -10,8 +10,8 @@
       <div class="col align-self-center">
         <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
   <ul id="history">
-    {%for m in message%}
-    <li>{{m.message}},{{m.handle}}{{m.timestamp}}</li>
+    {%for m in messages%}
+    <li>{{m.message}}, {{m.handle}} {{m.timestamp}}</li>
     {%endfor%}
   </ul>
   </div>
