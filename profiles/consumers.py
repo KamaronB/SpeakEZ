@@ -11,6 +11,7 @@ class ChatConsumer(AsyncConsumer):
 
         async def websocket_connect(self,event):
             print("connected",event)
+
             #get the name of the chatroom
             room_name=self.scope['url_route']['kwargs']['room_name']
             #get the User
@@ -19,11 +20,20 @@ class ChatConsumer(AsyncConsumer):
             #get the messages and the other userid
             other_user,messages= await self.get_room(room_name)
 
+            #create chat room for two users using channels_redis and the room_name
+            chat_room= f"room_{room_name}"
+            self.chat_room= chat_room
+            await self.channel_layer.group_add(
+                chat_room,
+                self.channel_name
+            )
 
             # await executes code and waits for it to finish
             await self.send({
             "type": "websocket.accept"
             })
+
+
 
             # await asyncio.sleep(19)
 
@@ -51,16 +61,33 @@ class ChatConsumer(AsyncConsumer):
                 "msg":msg,
                 "username": username
                     }
-                #send the response data back
-                await self.send({
-                "type": "websocket.send",
-                "text": json.dumps(response)
-                })
+                #save info to database
+                await self.save_message(msg)
+
+
+                #broadcasts the message event to be sent
+                await self.channel_layer.group_send(
+                    self.chat_room,
+                    {
+                    #the chat message function created earlier
+                    "type": "chat_message",
+                    "text": json.dumps(response)
+                    }
+                )
 
 
         async def websocket_disconnect(self,event):
             print("disconnected",event)
 
+
+
+        async def chat_message(self,event):
+            #sends the actual message
+            print('message',event)
+            await self.send({
+            "type": "websocket.send",
+            "text": event['text']
+            })
 
 
 
@@ -73,3 +100,13 @@ class ChatConsumer(AsyncConsumer):
          messages = reversed(room.messages.order_by('-timestamp')[:50])
 
          return other_user,messages
+
+
+
+        #asynchronously save messages to the database
+        @database_sync_to_async
+        def save_message(self,msg):
+         name= room_name=self.scope['url_route']['kwargs']['room_name']
+         current_room=Room.objects.get(room_name=name)
+         user=self.scope['user']
+         return Message.objects.create(room=current_room,handle=user.username,message=msg)

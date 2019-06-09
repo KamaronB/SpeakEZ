@@ -22,7 +22,7 @@
 </div>
 </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script>
     var formData=$("#form")
     var messages=$("#messages")
@@ -37,7 +37,7 @@
       ws_start='wss://'
     }
     //new websocket
-    var chatSocket = new WebSocket(ws_start + endpoint)
+    var chatSocket = new ReconnectingWebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
       //parse the returned data from consumer.py
@@ -56,7 +56,6 @@
           'message': msg
         }
          chatSocket.send(JSON.stringify(data))
-         chat_history.append("<li>" + msg +" "+ "{{user.username}}"+ "</li>")
          formData[0].reset()
       })
     }
