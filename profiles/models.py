@@ -29,7 +29,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    Lang_Pref = models.CharField(max_length=1, choices=Languages,default='EN')
+    Lang_Pref = models.CharField(max_length=2, choices=Languages,default='EN')
 
 
     @receiver(post_save, sender=User)

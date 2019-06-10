@@ -5,6 +5,7 @@ from django.urls import reverse,reverse_lazy
 from .models import User,requests,Relationship,People,Room,Message
 from .forms import InfoForm
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 import json
@@ -43,30 +44,36 @@ def search_user(request):
     return render (request,template,context)
 
 
+
 def update_account(request):
 
-    if request.method=='POST' and request.user.is_authenticated:
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            #create new instance of form
+            form= InfoForm(request.POST, instance=request.user.profile)
 
-        #create new instance of form
-        form= InfoForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                    print("made it here")
+                    #save user profile
 
-        if form.is_valid():
+                    form.save()
+                    print("made it here")
+                    #redirect to profile
+                    return HttpResponseRedirect('/profile/')
+            else:
+                print(form.errors)
+                return HttpResponse("form not valid")
+        else:
 
-                #save user profile
-                form.save()
-
-                #redirect to profile
-                return HttpResponseRedirect('/profile/')
-    else:
-        if request.user.is_authenticated:
             #if its not a post method create a new info form
             form= InfoForm(instance=request.user.profile)
             #this is to access form variable from view
             context= {'form': form}
             #return the html file to user with rendered form as context
             return render(request,'main/update.html',context)
-        else:
+    else:
             return HttpResponseRedirect('/accounts/login')
+
 
 
 def friend_request(request):
