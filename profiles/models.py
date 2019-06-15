@@ -47,7 +47,7 @@ class Profile(models.Model):
 
 class Relationship(models.Model):
     type = models.TextField(max_length=50,blank=True)
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,related_name='relationships', on_delete=models.CASCADE)
     #
 
 
@@ -56,10 +56,10 @@ class Relationship(models.Model):
 
 class People(models.Model):
     friend_id=models.PositiveIntegerField(null=True, blank=True)
-    rel_id= models.ForeignKey('Relationship',on_delete=models.CASCADE)
+    rel_id= models.ForeignKey(Relationship,related_name='people',on_delete=models.CASCADE)
 
 class requests(models.Model):
-    receiver=models.ForeignKey(User,on_delete=models.CASCADE)
+    receiver=models.ForeignKey(User,related_name='requests',on_delete=models.CASCADE)
     sender=models.PositiveIntegerField(null=False,blank=False)
     accepted=models.BooleanField(null=False,default=False,blank=False)
 
