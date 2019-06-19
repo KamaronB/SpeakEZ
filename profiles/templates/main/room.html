@@ -4,20 +4,30 @@
 {% block page_content %}
 
 {%if user.is_authenticated %}
-  <h1>Chat room between {{user.username}} && {{friend.first_name}}</h1>
+  <h1 style="color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
   <div class="container" >
     <div class="row">
       <div class="col align-self-center">
         <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
-  <ul id="history">
+  <div class="pre-scrollable">
+  <ul style="list-style-type:none;" id="history">
     {%for m in messages%}
-    <li>{{m.message}}, {{m.handle}} {{m.timestamp}}</li>
+    <div class="card">
+    <div class="card-body">
+    <li>
+    {{m.message}}, <p style="float:right;">{{m.handle}} <br/>{{m.timestamp}} </p>
+
+    </div>
+  </div>
+  </li>
+  <div>
     {%endfor%}
   </ul>
   </div>
     <form id='form' method="POST" style="margin-left:auto; margin-right:auto; padding-top:50px;"class="form-inline my-2 my-lg-0">{%csrf_token%}
       <input class="form-control mr-sm-2"  type="message" placeholder="message" id="messages" aria-label="messages" >
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">send</button>
+      <button class="btn" style="color:00CCCC;"><i class="fas fa-camera-retro"><sup>Video</sup></i>
     </form>
 </div>
 </div>
@@ -44,7 +54,7 @@
       var returned_data= JSON.parse(e.data)
 
       //append the chat history with new messages
-      chat_history.append("<li>" + returned_data.msg + " " + returned_data.username + "</li>")
+      chat_history.append("<li>  <div class='card'><div class='card-body'>" + returned_data.msg + " " + returned_data.username + "  </div></div></li>")
     }
     chatSocket.onopen= function(e){
       console.log("open",e)
