@@ -136,20 +136,26 @@ def accept_request(request):
 
 
 def show_friends(request):
-
+            peeps=[]
+            friends=[]
             template='main/chat.html'
             #get the current user
             current_user= request.user
             #get the users relationships
-            relationship = Relationship.objects.get(profile=current_user.profile)
+            relationship = Relationship.objects.filter(profile=current_user.profile)
             #find the people in the relationship
-            peeps = People.objects.get(rel_id=relationship)
-            #match the people to the user
-            friends=User.objects.filter(id=peeps.friend_id)
+            for rel in relationship:
+                peeps = rel.people.all()
+                #match the people to the user
+                for p in peeps:
+                    friends+=User.objects.filter(id=p.friend_id)
 
 
-            if friends:
-                pages=pagination(request,friends,num=10)
+
+
+            if friends!=None:
+                print(friends)
+                pages=pagination(request,friends,num=20)
                 context={'items':pages[0],
                 'page_range': pages[1],
                  }
@@ -168,7 +174,14 @@ def create_chat_room(request):
 
     # If the room with the given users doesn't exist, automatically create it
     # upon first visit
-    room = Room.objects.get(user_1__in=[user1.id,user2],user_2__in=[user1.id,user2])
+    try:
+        room = Room.objects.get(user_1__in=[user1.id,user2],user_2__in=[user1.id,user2])
+    except:
+        new_room = Room.objects.create(user_1=user1.id,user_2=user2)
+        #create new room and render it
+        return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': new_room.room_name}))
+
+
     if Room.objects.filter(room_name=room.room_name).exists():
         #render existing room
         return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': room.room_name}))
@@ -176,6 +189,7 @@ def create_chat_room(request):
         new_room = Room.objects.create(user_1=user1.id,user_2=user2)
         #create new room and render it
         return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': new_room.room_name}))
+
 
 
 def chat_room(request,room_name):

@@ -1,5 +1,8 @@
 import asyncio
 import json
+import cv2
+import numpy as np
+import base64
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
@@ -42,9 +45,10 @@ class ChatConsumer(AsyncConsumer):
 
 
         async def websocket_receive(self, event):
-            print("recieve",event)
+            # print("recieve",event)
             user=self.scope['user']
             username= user.username
+            userid= user.id
             #grab data sent from room.html onopen function
             #example recieve {'type': 'websocket.receive', 'text': '{"message":"ads"}'}
             text_data= event.get('text',None)
@@ -55,14 +59,28 @@ class ChatConsumer(AsyncConsumer):
 
                 ##get the actual message from data_dict
                 msg=data_dict.get('message')
-                print(msg)
+                vid=data_dict.get('video')
+
+
                 #Response data
-                response= {
-                "msg":msg,
-                "username": username
-                    }
-                #save message to database
-                await self.save_message(msg)
+                if msg is not None:
+                    response= {
+                    "msg":msg,
+                    "username": username,
+
+
+                        }
+                    #save message to database
+                    await self.save_message(msg)
+                else:
+
+                     response={
+                    'video': vid,
+                    'userid': userid,
+
+                        }
+
+
 
 
                 #broadcasts the message event to be sent
@@ -83,7 +101,7 @@ class ChatConsumer(AsyncConsumer):
 
         async def chat_message(self,event):
             #sends the actual message
-            print('message',event)
+            # print('message',event)
             await self.send({
             "type": "websocket.send",
             "text": event['text']
@@ -103,7 +121,7 @@ class ChatConsumer(AsyncConsumer):
 
 
 
-        #asynchronously save messages to the database
+        # #asynchronously save messages to the database
         @database_sync_to_async
         def save_message(self,msg):
          name= room_name=self.scope['url_route']['kwargs']['room_name']
