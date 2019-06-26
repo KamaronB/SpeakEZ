@@ -6,7 +6,7 @@ Please add GPG Keys
   2.Kurento Media Server<br/>
   3.Redis<br/>
   4.Channels Websockets<br/>
-  5.WebRTC<br/>
+  5.Webrtc<br/>
   6.Prayers
 ## Collaborators
 [Kamaron Bickham](https://github.com/KamaronB) <br/>
