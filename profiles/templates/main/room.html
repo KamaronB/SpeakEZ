@@ -5,9 +5,31 @@
 
 {%if user.is_authenticated %}
   <h1 style="color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
+  <div id="hid_vid" style="display:none;">
+  </div>
   <div class="container" >
     <div class="row">
       <div class="col align-self-center">
+        <div style=" display: none;height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
+          <video id="video" width="400px" height="300px" autoplay> </video>
+
+
+        </div>
+
+        <div style="height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
+        <img id="img">
+        </div>
+
+        <div style="height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
+          <img id="img2">
+        </div>
+
+
+
+
+
+
+
         <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
   <div class="pre-scrollable">
   <ul style="list-style-type:none;" id="history">
@@ -27,17 +49,27 @@
     <form id='form' method="POST" style="margin-left:auto; margin-right:auto; padding-top:50px;"class="form-inline my-2 my-lg-0">{%csrf_token%}
       <input class="form-control mr-sm-2"  type="message" placeholder="message" id="messages" aria-label="messages" >
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">send</button>
-      <button class="btn" style="color:00CCCC;"><i class="fas fa-camera-retro"><sup>Video</sup></i>
     </form>
+      <button class="btn" id="vid-icon" onclick="video_setup()" style="color:00CCCC;"><i class="fas fa-camera-retro"><sup>Video</sup></i>
 </div>
 </div>
 </div>
+</div>
+{% load static %}
+<script src="{%static "Javascript/vid.js"%}" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script>
+///////////////////////////////MESSAGES/////////////////////////////////////////
     var formData=$("#form")
     var messages=$("#messages")
+    var vid_div=$("#vid-div")
+    var video=$("#video2")
     var chat_history=$("#history")
     var roomName = "{{ room.room_name}}"
+    const img = document.getElementById('img');
+    const img2 = document.getElementById('img2');
+    var cameraButton = document.getElementById('vid-icon');
+    // console.log(img.src=='')
     // var location= window.location
     var endpoint= window.location.host + '/profile/chat/room/' + roomName + '/'
     var ws_start='ws://'
@@ -47,14 +79,37 @@
       ws_start='wss://'
     }
     //new websocket
-    var chatSocket = new ReconnectingWebSocket(ws_start + endpoint)
+    var chatSocket = new WebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
       //parse the returned data from consumer.py
       var returned_data= JSON.parse(e.data)
 
+
       //append the chat history with new messages
+      if (returned_data.msg!=null){
       chat_history.append("<li>  <div class='card'><div class='card-body'>" + returned_data.msg + " " + returned_data.username + "  </div></div></li>")
+        }
+
+      if(returned_data.video!=null)
+      {
+
+        console.log(returned_data.userid)
+        if (returned_data.userid=="{{room.user_1}}")
+        {
+          console.log("true")
+          img.src=returned_data.video
+        }
+        else
+        {
+          img2.src=returned_data.video
+        }
+
+
+      }
+
+
+
     }
     chatSocket.onopen= function(e){
       console.log("open",e)
@@ -75,6 +130,69 @@
     chatSocket.onclose= function(e){
       console.log("close",e)
     }
+
+
+////////////////////////////////Video//////////////////////////////////////////
+
+
+    var cam = "";
+    function video_setup(){
+      //get the div
+
+    var container = document.getElementById('vid-box');
+    console.log("hello")
+    //get the video element and send which type of browser we are using
+    var vid = document.getElementById('video'), vendorUrl= window.URL || window.webkitURL;
+
+    navigator.getMedia= navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    if (container.style.display=='none') {
+    //display the div
+    // container.style.display='block';
+
+
+
+    //get the media
+    navigator.getMedia({
+      video: true,
+      audio: false
+    },
+    //callback functions
+     function(stream){
+      //place stream in video element
+      cam=stream
+      vid.srcObject=cam;
+    vid.play();
+
+    },
+    function(error){
+      //an error happened
+      console.log(error.code)
+    });
+    function Frame() {
+    const canvas = document.createElement('canvas');
+    canvas.width =  vid.width;
+    canvas.height = vid.height;
+    canvas.getContext('2d').drawImage(vid, 0, 0);
+    const data = canvas.toDataURL();
+    return data;
+  }
+      const FPS=1;
+             console.log(`Connected to ${endpoint}`);
+             setInterval(() => {
+               data={'video': Frame()}
+
+                 chatSocket.send(JSON.stringify(data));
+             }, 1000 / FPS);
+    }
+
+    else{
+      container.style.display='none';
+    //close webcam
+     cam.getTracks().forEach(track => track.stop());
+    }
+
+           }
+
 </script>
 {%else%}
 <h1>These are not the pages you are looking for</h1>

@@ -174,7 +174,14 @@ def create_chat_room(request):
 
     # If the room with the given users doesn't exist, automatically create it
     # upon first visit
-    room = Room.objects.get(user_1__in=[user1.id,user2],user_2__in=[user1.id,user2])
+    try:
+        room = Room.objects.get(user_1__in=[user1.id,user2],user_2__in=[user1.id,user2])
+    except:
+        new_room = Room.objects.create(user_1=user1.id,user_2=user2)
+        #create new room and render it
+        return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': new_room.room_name}))
+
+
     if Room.objects.filter(room_name=room.room_name).exists():
         #render existing room
         return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': room.room_name}))
@@ -182,6 +189,7 @@ def create_chat_room(request):
         new_room = Room.objects.create(user_1=user1.id,user_2=user2)
         #create new room and render it
         return redirect(reverse_lazy('profiles:chat_room',  kwargs={'room_name': new_room.room_name}))
+
 
 
 def chat_room(request,room_name):
