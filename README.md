@@ -10,3 +10,4 @@ Please add GPG Keys
   6.Prayers
 ## Collaborators
 [Kamaron Bickham](https://github.com/KamaronB)
+[Jesse Schmit](https://github.com/JesseSchmit)
