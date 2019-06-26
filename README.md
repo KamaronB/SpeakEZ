@@ -1,4 +1,4 @@
-# SpeakEasy
+# SpeakEZ
 Tis A Secret
 Please add GPG Keys
 # Stack:
