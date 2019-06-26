@@ -4,57 +4,60 @@
 {% block page_content %}
 
 {%if user.is_authenticated %}
-  <h1 style="color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
-  <div id="hid_vid" style="display:none;">
-  </div>
-  <div class="container" >
-    <div class="row">
-      <div class="col align-self-center">
+
+  <div  style="margin: auto;width:900px;" >
+
+
         <div style=" display: none;height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
           <video id="video" width="400px" height="300px" autoplay> </video>
-
-
         </div>
 
-        <div style="height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
+        <div style="width:900px;">
+          <h1 style="color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
+
+        <div style=" float: right;height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
         <img id="img">
         </div>
 
-        <div style="height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
+        <div style="float: left;height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
           <img id="img2">
         </div>
+      </div>
+
+      <br/>
 
 
-
-
-
-
-
-        <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
-  <div class="pre-scrollable">
-  <ul style="list-style-type:none;" id="history">
-    {%for m in messages%}
-    <div class="card">
-    <div class="card-body">
-    <li>
-    {{m.message}}, <p style="float:right;">{{m.handle}} <br/>{{m.timestamp}} </p>
 
     </div>
-  </div>
-  </li>
-  <div>
-    {%endfor%}
-  </ul>
-  </div>
+
+    <div id="scroll_w_button" style="padding-top: 90px;margin: auto;display:flex;" >
+    <div class="pre-scrollable" style="width:900px;">
+    <ul style="list-style-type:none;" id="history">
+      {%for m in messages%}
+      <div class="card">
+      <div class="card-body">
+      <li>
+      {{m.message}}, <p style="float:right;">{{m.handle}} <br/>{{m.timestamp}} </p>
+
+      </div>
+    </div>
+    </li>
+      {%endfor%}
+    </ul>
+    </div>
+  </br>
     <form id='form' method="POST" style="margin-left:auto; margin-right:auto; padding-top:50px;"class="form-inline my-2 my-lg-0">{%csrf_token%}
       <input class="form-control mr-sm-2"  type="message" placeholder="message" id="messages" aria-label="messages" >
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">send</button>
     </form>
       <button class="btn" id="vid-icon" onclick="video_setup()" style="color:00CCCC;"><i class="fas fa-camera-retro"><sup>Video</sup></i>
-</div>
-</div>
-</div>
-</div>
+      </div>
+
+
+
+
+
+
 {% load static %}
 <script src="{%static "Javascript/vid.js"%}" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>

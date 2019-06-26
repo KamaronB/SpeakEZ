@@ -59,7 +59,7 @@
 {%if user.is_authenticated%}
 
 
-<div id="wrapper">
+<div id="wrapper" style=" background-size: auto;background-image:url({% static "images/background2.png" %})">
 
   <!-- Sidebar -->
   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -151,11 +151,11 @@
   <!-- End of Sidebar -->
 
   <!-- Content Wrapper -->
-  <div class="row" style="margin-left:auto; margin-right:auto;">
+  <div class="row" style="display: flex;margin-left:auto; margin-right:auto;" >
   <!--<div class="col align-self-center">-->
 <h1></h1>
 {% block page_content %}{% endblock %}
-</div>
+
 </div>
 </div>
 
