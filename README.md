@@ -11,7 +11,11 @@ Please add GPG Keys
   3.Redis<br/>
   4.Channels Websockets<br/>
   5.Webrtc<br/>
-  6.Prayers
+  6.OpenNMT<br/>
+  7.pyttsx<br/>
+  8.PyTorch<br/>
+  9.SpeechRecognition</br>
+  10.Prayers
 ## Collaborators
 [Kamaron Bickham](https://github.com/KamaronB) <br/>
 [Jesse Schmit](https://github.com/JesseSchmit)
