@@ -1,4 +1,4 @@
-# SpeakEZ
+# SpeakEasy
 ![speakEZ](https://github.com/KamaronB/SpeakEZ/blob/master/static/images/8954012d-cf62-4ff2-a24e-bfcb212f6282.png) 
 ![speakEZ](https://github.com/KamaronB/SpeakEZ/blob/master/static/images/8954012d-cf62-4ff2-a24e-bfcb212f6282.png) 
 ![speakEZ](https://github.com/KamaronB/SpeakEZ/blob/master/static/images/8954012d-cf62-4ff2-a24e-bfcb212f6282.png) 
