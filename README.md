@@ -22,7 +22,7 @@ Please add GPG Keys
 
 
 
-#Things for the future
+# Things for the future
 Change Translation pipeline, and efficiency as well as many many security issues, possible relational problems?,update UI, and sucky video chat.
 ## Collaborators
 [Kamaron Bickham](https://github.com/KamaronB) <br/>
