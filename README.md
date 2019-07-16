@@ -18,4 +18,4 @@ Please add GPG Keys
   10.Prayers
 ## Collaborators
 [Kamaron Bickham](https://github.com/KamaronB) <br/>
-[Jesse Schmit](https://github.com/JesseSchmit)
+[Ringo The Dog](https://github.com/)
