@@ -6,11 +6,58 @@
     <div class="col align-self-center">
       {%load static%}
       ​<picture>
-    <source srcset="..." type="image/svg+xml">
-    <img src="{% static "images/brett-zeck-672527-unsplash.jpg" %}" class="img-fluid img-thumbnail" alt="...">
+    <img src="{% static 'images/brett-zeck-672527-unsplash.jpg' %}" class="img-fluid img-thumbnail" alt="...">
   </picture>
 </div>
 </div>
 </div>
-<p>DIS DAT ABOUT SHIT</p>
+<h1 style="margin:auto; text-align:center;">The Master has Failed more Times than the Beginner has Tried</h1>
+<div id="map" style="height:700px;"></div>
+   <script>
+     var map;
+     function initMap() {
+       map = new google.maps.Map(document.getElementById('map'), {
+         center: {lat: 40.6331, lng: -89.3985},
+         zoom: 4
+       });
+
+
+        var infowindow = new google.maps.InfoWindow({
+         content: "<img src={% static 'images/Illinois.png' %} />"
+       });
+       var infowindow2 = new google.maps.InfoWindow({
+        content: "<img src={% static 'images/Arkansas.png' %} />"
+       });
+       var infowindow3 = new google.maps.InfoWindow({
+        content: "<img src={% static 'images/Alabama.png' %} />"
+       });
+       var marker = new google.maps.Marker({
+          position: {lat: 40.6331, lng: -89.3985},
+          map: map,
+          title: 'Illinois Data'
+        });
+       marker.addListener('click', function() {
+         infowindow.open(map, marker);
+       });
+
+       var marker2 = new google.maps.Marker({
+          position: {lat: 35.2010, lng: -91.8318},
+          map: map,
+          title: 'Arkansas Data'
+        });
+       marker2.addListener('click', function() {
+         infowindow2.open(map, marker2);
+       });
+       var marker3 = new google.maps.Marker({
+          position: {lat: 32.3182, lng: -86.9023},
+          map: map,
+          title: 'Alabama Data'
+        });
+       marker3.addListener('click', function() {
+         infowindow3.open(map, marker3);
+       });
+     }
+   </script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpWecUYIcQPOSbNqqH3sI10xJaeOg0GMk&callback=initMap"
+   async defer></script>
 {% endblock %}
