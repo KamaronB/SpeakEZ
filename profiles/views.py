@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 import json
+from . import trans_mover
 
 # Create your views here.
 
@@ -195,11 +196,18 @@ def create_chat_room(request):
 def chat_room(request,room_name):
         room= Room.objects.get(room_name=room_name)
 
+
+
         if request.user.is_authenticated and room.user_1==request.user.id or room.user_2==request.user.id:
 
             #get the last 50 messages
             messages = reversed(room.messages.order_by('-timestamp')[:50])
 
+
+
+
+
+            translation= trans_mover.translate(get_txt(room_name))
             #render the room with the user objects inside of them
             current_user= request.user
             oth_user= None
@@ -211,7 +219,17 @@ def chat_room(request,room_name):
                 'room': room,
                 'messages': messages,
                 'user': current_user,
-                'friend': oth_user
+                'friend': oth_user,
+                'translations': translation
             })
         else:
             return render(request,"error/404.html",{})
+
+def get_txt(room_name):
+    room= Room.objects.get(room_name=room_name)
+    untranslated=[]
+    messages = reversed(room.messages.order_by('-timestamp')[:50])
+    for msg in messages:
+        untranslated.append(msg.message)
+
+    return untranslated

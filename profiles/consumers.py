@@ -1,6 +1,6 @@
 import asyncio
 import json
-import cv2
+# import cv2
 import numpy as np
 import base64
 from django.contrib.auth import get_user_model

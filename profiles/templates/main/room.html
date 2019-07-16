@@ -4,7 +4,7 @@
 {% block page_content %}
 
 {%if user.is_authenticated %}
-
+<!-- <link href='https://fonts.googleapis.com/css?family=Iceland' rel='stylesheet'> -->
   <div  style="margin: auto;width:900px;" >
 
 
@@ -13,7 +13,7 @@
         </div>
 
         <div style="width:900px;">
-          <h1 style="color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
+          <h1 style=" color:00CCCC;" class="display-1 col align-self-center" >Chat With {{friend.first_name}}</h1>
 
         <div style=" float: right;height: 320px;width:420px; background:#ccc; border:10px solid #ccc;"id="vid-box">
         <img id="img">
@@ -45,6 +45,13 @@
       {%endfor%}
     </ul>
     </div>
+    <ul>
+      {%for trans in translations%}
+    <li>
+      {{trans}}
+    </li>
+    {%endfor%}
+    </ul>
   </br>
     <form id='form' method="POST" style="margin-left:auto; margin-right:auto; padding-top:50px;"class="form-inline my-2 my-lg-0">{%csrf_token%}
       <input class="form-control mr-sm-2"  type="message" placeholder="message" id="messages" aria-label="messages" >
@@ -59,7 +66,7 @@
 
 
 {% load static %}
-<script src="{%static "Javascript/vid.js"%}" ></script>
+<!-- <script src="{%static "Javascript/vid.js"%}" ></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script>
 ///////////////////////////////MESSAGES/////////////////////////////////////////
@@ -82,7 +89,7 @@
       ws_start='wss://'
     }
     //new websocket
-    var chatSocket = new WebSocket(ws_start + endpoint)
+    var chatSocket = new ReconnectingWebSocket(ws_start + endpoint)
     chatSocket.onmessage = function(e){
       console.log("message",e)
       //parse the returned data from consumer.py
